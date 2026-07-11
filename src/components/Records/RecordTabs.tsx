@@ -7,7 +7,7 @@ import { Button, DropDownList, Icon, Tooltip } from '../ui';
 import { Pencil } from '@/components/SaleSyncIcons';
 import TabLayoutModal from '../TabLayoutModal/TabLayoutModal';
 import useType from '@/hooks/type-service/useType';
-import { PinIcon, X } from 'lucide-react';
+import { Download, PinIcon, X } from 'lucide-react';
 import useTenant from '@/hooks/useTenant';
 // import { LayoutOrder, Type } from '@/type';
 
@@ -30,7 +30,8 @@ const RecordTabs = ({ tabs = [], name, domainName = 'sales', currentTab }: Recor
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const { updateUserSettings, user, isLoading, setUser } = useAuth();
+  const [canExport, setCanExport] = useState(false);
+  const { updateUserSettings, user, isLoading, setUser, hasPermission } = useAuth();
   const tabWidth = 100;
   let visibleTabs = Math.max(0, Math.floor(windowWidth / tabWidth) - 3);
   const tabListShown = tabs.slice(0, visibleTabs);
@@ -61,6 +62,15 @@ const RecordTabs = ({ tabs = [], name, domainName = 'sales', currentTab }: Recor
       });
     };
   }, []);
+
+  useEffect(() => {
+    const checkPermission = async () => {
+      const readOwn = await hasPermission('read-own');
+      const readAll = await hasPermission('read-all');
+      setCanExport(readOwn || readAll);
+    };
+    checkPermission();
+  }, [hasPermission]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -329,18 +339,32 @@ const RecordTabs = ({ tabs = [], name, domainName = 'sales', currentTab }: Recor
           </li>
         )}
       </ul>
-      <Button
-        rounded='icon'
-        data-tooltip-id='edit-layout'
-        data-tooltip-content='Edit Tabs'
-        // data-tooltip-place="top"
-        className='absolute right-0 top-[1px] aspect-square rounded-full border-0 bg-transparent p-0 dark:bg-transparent'
-        onClick={() => {
-          setIsEditModalOpen(true);
-        }}
-      >
-        <Pencil width='1.2rem' height='1.2rem' />
-      </Button>
+      <div className='absolute right-0 top-[1px] flex items-center gap-1'>
+        {canExport && (
+          <Button
+            data-tooltip-id='export-csv'
+            data-tooltip-content='Export CSV'
+            className='space-x-2'
+            onClick={() => navigate(typeId ? `/private/csv-export?typeId=${typeId}` : '/private/csv-export')}
+          >
+            <Download size='1rem' />
+            <p>Export CSV</p>
+          </Button>
+        )}
+        <Button
+          rounded='icon'
+          data-tooltip-id='edit-layout'
+          data-tooltip-content='Edit Tabs'
+          // data-tooltip-place="top"
+          className='aspect-square rounded-full border-0 bg-transparent p-0 dark:bg-transparent'
+          onClick={() => {
+            setIsEditModalOpen(true);
+          }}
+        >
+          <Pencil width='1.2rem' height='1.2rem' />
+        </Button>
+      </div>
+      <Tooltip id='export-csv' />
       <Tooltip id='edit-layout' />
       <TabLayoutModal
         openingTabId={recordId ?? typeId}

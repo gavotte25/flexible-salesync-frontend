@@ -6,9 +6,9 @@ import Panel from '@/components/ui/Panel/Panel';
 import TextInput from '@/components/ui/TextInput/TextInput';
 import { MODAL_TYPES, useGlobalModalContext } from '@/context/GlobalModalContext';
 // import { Type } from '@/type';
-import { Download, Filter, Import, Plus, RefreshCw } from 'lucide-react';
+import { Filter, Import, Plus, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import LoadingSpinnerSmall from '../ui/Loading/LoadingSpinnerSmall';
 import useRecords, { RecordsQueryResponse } from '@/hooks/record-service/useRecords';
@@ -29,12 +29,10 @@ const customTypeIcon = `${iconBaseUrl}/salesync_custom_type.png`;
 const RecordSection = ({ type }: RecordSectionProps) => {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const { typeId = '' } = useParams();
-  const navigate = useNavigate();
   const companyName = useTenant();
   const [search, setSearch] = useState('');
   const [canCreate, setCanCreate] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
-  const [canExport, setCanExport] = useState(false);
   const [quickSearch, setQuickSearch] = useState(false);
   const { hasPermission } = useAuth();
 
@@ -68,9 +66,6 @@ const RecordSection = ({ type }: RecordSectionProps) => {
       const canDeleteOwn = await hasPermission('delete-own');
       const canDeleteAll = await hasPermission('delete-all');
       setCanDelete(canDeleteOwn || canDeleteAll);
-      const canReadOwn = await hasPermission('read-own');
-      const canReadAll = await hasPermission('read-all');
-      setCanExport(canReadOwn || canReadAll);
     };
     checkPermission();
   }, []);
@@ -160,19 +155,6 @@ const RecordSection = ({ type }: RecordSectionProps) => {
                 <Filter size='1rem' />
               </Button>
               <Tooltip id='filterTable' />
-              {canExport && (
-                <ButtonGroup>
-                  <Button
-                    intent='normal'
-                    zoom={false}
-                    className='space-x-2'
-                    onClick={() => navigate(`/private/csv-export?typeId=${typeId}`)}
-                  >
-                    <Download size='1rem' />
-                    <p>Export CSV</p>
-                  </Button>
-                </ButtonGroup>
-              )}
               <ButtonGroup>
                 {canDelete && (
                   <Button intent='normal' zoom={false} className='space-x-2' onClick={handleDeleteList}>
