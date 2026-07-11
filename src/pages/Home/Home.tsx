@@ -21,7 +21,7 @@ const HomeLayout = () => {
           {user.avatar_url && (
             <img
               className='aspect-square w-48 self-center rounded-full'
-              src={`${import.meta.env.VITE_STORAGE_SERVICE_HOST}/avatars/${user.avatar_url}-256.jpg?}`}
+              src={`${import.meta.env.VITE_STORAGE_SERVICE_HOST}/avatars/${user.avatar_url}-256.jpg?lastmod=${Date.now()}`}
             ></img>
           )}
           <div className='w-3/4 self-center px-6 pt-4'>

@@ -81,7 +81,7 @@ const ConvertModal = () => {
             await recordApi.deleteRecord(companyName, [recordId]);
             queryClient.invalidateQueries(['records']);
 
-            navigate(`/${companyName}/section/${domainName}/record/${contact.id}`);
+            navigate(`/private/section/${domainName}/record/${contact.id}`);
             hideModal();
           }
         } catch (error: any) {

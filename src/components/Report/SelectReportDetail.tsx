@@ -42,7 +42,7 @@ const SelectReportDetail = ({ selectedType, onDetailClose, typeName }: SelectRep
         <ShortSelectReportDetail name={typeName} />
         <PrimaryButton
           onClick={() => {
-            navigate(`${companyName}/section/${domainName}/report/create-report/${selectedType?.id}`);
+            navigate(`/private/section/${domainName}/report/create-report/${selectedType?.id}`);
             hideModal();
           }}
         >

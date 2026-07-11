@@ -21,11 +21,11 @@ export const createUser = async (realmId: string, user: NewUser, accessToken: st
 };
 
 // Reset password for a user
-export const resetPassword = async (userId: string, newPassword: string, accessToken: string) => {
+export const resetPassword = async (realmId: string, userId: string, newPassword: string, accessToken: string) => {
   try {
     const response = await instance.put(
-      `${BASE_URL}/users/${userId}/reset-password`,
-      { newPassword },
+      `${BASE_URL}/${realmId}/user/password`,
+      { user_id: userId, new_password: newPassword },
       {
         headers: {
           'Content-Type': 'application/json',
