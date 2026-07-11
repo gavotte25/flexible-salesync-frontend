@@ -33,6 +33,8 @@ const VerifyEmail = lazy(() => import('pages/VerifyEmail/VerifyEmail'));
 const ChangePassword = lazy(() => import('pages/ChangePassword/ChangePassword'));
 const ForgotPassword = lazy(() => import('pages/LogIn/ForgotPassword'));
 const RecordDetail = lazy(() => import('./pages/RecordDetail/RecordDetail'));
+const CsvExport = lazy(() => import('./pages/Records/CsvExport'));
+const RecordsLayout = lazy(() => import('./pages/Records/RecordsLayout'));
 
 function App() {
   return (
@@ -72,6 +74,9 @@ function App() {
                 <Route path='object-manager/:typeId' element={<TypePropertyManager />} />
                 <Route path='object-manager/:typeId/create' element={<PropertySetting />} />
               </Route>
+            </Route>
+            <Route element={<RecordsLayout />}>
+              <Route path='csv-export' element={<CsvExport />} />
             </Route>
           </Route>
           <Route path='/realms/:companyName/login-actions/action-token' element={<VerifyEmail />}></Route>
