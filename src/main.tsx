@@ -8,8 +8,28 @@ import './index.css';
 import { GlobalModalProvider } from './context/GlobalModalContext.tsx';
 import 'react-tooltip/dist/react-tooltip.css';
 import NotificationProvider from './context/NotificationContext.tsx';
+import { Button, Panel, Tooltip, TextInput } from './components/ui';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from './components/ui/select';
+import RecordTable from './components/Records/RecordTable';
+import LoadingSpinnerSmall from './components/ui/Loading/LoadingSpinnerSmall';
 
 const queryClient = new QueryClient();
+
+window.React = React;
+window.ReactDOM = ReactDOM;
+window.__miscCloudHostUI__ = {
+  Button,
+  Panel,
+  RecordTable,
+  Tooltip,
+  TextInput,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  LoadingSpinnerSmall
+};
 
 async function enableMocking() {
   if (process.env.NODE_ENV === 'mock') {

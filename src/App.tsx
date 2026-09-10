@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import resolveComponent from './customization/resolveComponent';
 import { Toaster } from './components/ui/Toast';
 
 const ConfigLayout = lazy(() => import('./components/Layout/ConfigLayout'));
@@ -25,14 +26,16 @@ const RoleSetting = lazy(() => import('./pages/Settings/RoleSetting'));
 const Cheatsheet = lazy(() => import('pages/Cheatsheet/Cheatsheet'));
 // const TypeDetail = lazy(() => import('./pages/TypeDetail/TypeDetail'));
 // const TypeManager = lazy(() => import('./pages/TypeManager/TypeManager'));
-const SectionDomain = lazy(() => import('./pages/SectionDomain/SectionDomain'));
+// MiSC-Cloud customization pointcuts: falls back to the default page below unless the
+// current tenant has an active customization registration for the given point.
+const SectionDomain = resolveComponent('record.list.view', lazy(() => import('./pages/SectionDomain/SectionDomain')));
 const SignUp = lazy(() => import('./pages/SignUp/SignUp'));
 const HomeLayout = lazy(() => import('./pages/Home/Home'));
 const LogIn = lazy(() => import('pages/LogIn/LogIn'));
 const VerifyEmail = lazy(() => import('pages/VerifyEmail/VerifyEmail'));
 const ChangePassword = lazy(() => import('pages/ChangePassword/ChangePassword'));
 const ForgotPassword = lazy(() => import('pages/LogIn/ForgotPassword'));
-const RecordDetail = lazy(() => import('./pages/RecordDetail/RecordDetail'));
+const RecordDetail = resolveComponent('record.detail.view', lazy(() => import('./pages/RecordDetail/RecordDetail')));
 
 function App() {
   return (

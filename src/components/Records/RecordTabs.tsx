@@ -9,6 +9,7 @@ import TabLayoutModal from '../TabLayoutModal/TabLayoutModal';
 import useType from '@/hooks/type-service/useType';
 import { PinIcon, X } from 'lucide-react';
 import useTenant from '@/hooks/useTenant';
+import CustomizationSlot from '@/customization/CustomizationSlot';
 // import { LayoutOrder, Type } from '@/type';
 
 interface RecordTabsProps {
@@ -329,18 +330,20 @@ const RecordTabs = ({ tabs = [], name, domainName = 'sales', currentTab }: Recor
           </li>
         )}
       </ul>
-      <Button
-        rounded='icon'
-        data-tooltip-id='edit-layout'
-        data-tooltip-content='Edit Tabs'
-        // data-tooltip-place="top"
-        className='absolute right-0 top-[1px] aspect-square rounded-full border-0 bg-transparent p-0 dark:bg-transparent'
-        onClick={() => {
-          setIsEditModalOpen(true);
-        }}
-      >
-        <Pencil width='1.2rem' height='1.2rem' />
-      </Button>
+      <div className='absolute right-0 top-[1px] flex items-center gap-1'>
+        <CustomizationSlot pointKey='record.tabs.actions' typeId={typeId} />
+        <Button
+          rounded='icon'
+          data-tooltip-id='edit-layout'
+          data-tooltip-content='Edit Tabs'
+          className='aspect-square rounded-full border-0 bg-transparent p-0 dark:bg-transparent'
+          onClick={() => {
+            setIsEditModalOpen(true);
+          }}
+        >
+          <Pencil width='1.2rem' height='1.2rem' />
+        </Button>
+      </div>
       <Tooltip id='edit-layout' />
       <TabLayoutModal
         openingTabId={recordId ?? typeId}
