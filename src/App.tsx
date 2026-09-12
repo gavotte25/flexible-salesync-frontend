@@ -36,6 +36,8 @@ const VerifyEmail = lazy(() => import('pages/VerifyEmail/VerifyEmail'));
 const ChangePassword = lazy(() => import('pages/ChangePassword/ChangePassword'));
 const ForgotPassword = lazy(() => import('pages/LogIn/ForgotPassword'));
 const RecordDetail = resolveComponent('record.detail.view', lazy(() => import('./pages/RecordDetail/RecordDetail')));
+const CustomizationPage = lazy(() => import('./pages/Customization/CustomizationPage'));
+const RecordsLayout = lazy(() => import('./pages/Records/RecordsLayout'));
 
 function App() {
   return (
@@ -75,6 +77,9 @@ function App() {
                 <Route path='object-manager/:typeId' element={<TypePropertyManager />} />
                 <Route path='object-manager/:typeId/create' element={<PropertySetting />} />
               </Route>
+            </Route>
+            <Route element={<RecordsLayout />}>
+              <Route path='csv-export' element={<CustomizationPage pointKey='record.csv-export' />} />
             </Route>
           </Route>
           <Route path='/realms/:companyName/login-actions/action-token' element={<VerifyEmail />}></Route>
